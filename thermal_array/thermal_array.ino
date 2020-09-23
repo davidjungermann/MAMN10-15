@@ -1,3 +1,27 @@
+/*  
+ Components
+ * ----------
+ *  - Arduino Uno
+ *  - TPA81 thermal array sensor
+ *  
+ *  Libraries
+ *  ---------
+ *  - Wire
+ *  - TPA81(https://github.com/ilhamadun/TPA81) 
+ *
+ * Connections
+ * -----------
+ *  Break out    |    Arduino Uno
+ *  -----------------------------
+ *      VCC      |      3.3V
+ *      GND      |      GND
+ *      SDA      |      A4
+ *      SCL      |      A5
+ *      
+ *      
+ *      Based on example from https://electropeak.com/learn/motion-gesture-detection-arduino-pir-sensor/ 
+  */
+
 #include <TPA81.h>
 #include <Wire.h>
 
