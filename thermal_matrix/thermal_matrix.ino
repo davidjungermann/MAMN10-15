@@ -88,7 +88,7 @@ void loop()
     /* Check if the current temperature is  */
     if (abs(ambientTemperature - pixels[i - 1]) > 2)
     {
-      Serial.print(pixels[i - 1]);
+      Serial.print("###");
     }
     else
     {
