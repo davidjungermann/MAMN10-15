@@ -1,0 +1,5 @@
+{
+    "board": "arduino:avr:uno",
+    "sketch": "thermal_matrix/thermal_matrix.ino",
+    "port":"/dev/ttyACM0"
+}

@@ -1,3 +1,4 @@
+
 /***************************************************************************
   This is a library for the AMG88xx GridEYE 8x8 IR camera
 
@@ -22,41 +23,65 @@
 Adafruit_AMG88xx amg;
 
 float pixels[AMG88xx_PIXEL_ARRAY_SIZE];
+int ambientTemperature;
 
-void setup() {
-    Serial.begin(9600);
-    Serial.println(F("AMG88xx pixels"));
+void setup()
+{
+  Serial.begin(9600);
+  Serial.println(F("AMG88xx pixels"));
 
-    bool status;
-    
-    // default settings
-    status = amg.begin();
-    if (!status) {
-        Serial.println("Could not find a valid AMG88xx sensor, check wiring!");
-        while (1);
-    }
-    
-    Serial.println("-- Pixels Test --");
+  bool status;
+  int totalTemperature;
 
-    Serial.println();
+  // default settings
+  status = amg.begin();
+  if (!status)
+  {
+    Serial.println("Could not find a valid AMG88xx sensor, check wiring!");
+    while (1)
+      ;
+  }
 
-    delay(100); // let sensor boot up
+  Serial.println("-- Pixels Test --");
+
+  Serial.println();
+
+  delay(100); // let sensor boot up
+
+  amg.readPixels(pixels);
+  for (int i = 0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++)
+  {
+    totalTemperature += pixels[i];
+  }
+  ambientTemperature = (totalTemperature / AMG88xx_PIXEL_ARRAY_SIZE);
+  Serial.println(ambientTemperature);
+  Serial.println();
+  delay(1000);
 }
 
+void loop()
+{
+  //read all the pixels
+  amg.readPixels(pixels);
 
-void loop() { 
-    //read all the pixels
-    amg.readPixels(pixels);
-
-    Serial.print("[");
-    for(int i=1; i<=AMG88xx_PIXEL_ARRAY_SIZE; i++){
-      Serial.print(pixels[i-1]);
-      Serial.print(", ");
-      if( i%8 == 0 ) Serial.println();
+  Serial.print("[");
+  for (int i = 1; i <= AMG88xx_PIXEL_ARRAY_SIZE; i++)
+  {
+    if (abs(ambientTemperature - pixels[i - 1]) > 2)
+    {
+      Serial.print("###");
     }
-    Serial.println("]");
-    Serial.println();
+    else
+    {
+      Serial.print(pixels[i - 1]);
+    }
+    Serial.print(", ");
+    if (i % 8 == 0)
+      Serial.println();
+  }
+  Serial.println("]");
+  Serial.println();
 
-    //delay a second
-    delay(1000);
+  //delay a second
+  delay(1000);
 }
