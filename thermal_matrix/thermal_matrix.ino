@@ -17,6 +17,27 @@
   BSD license, all text above must be included in any redistribution
  ***************************************************************************/
 
+ /*  
+ Components
+ * ----------
+ *  - Arduino Uno
+ *  - Adafruit_AMG88xx thermal sensor
+ *  
+ *  Libraries
+ *  ---------
+ *  - Wire
+ *  - Adafruit_AMG88xx https://github.com/adafruit/Adafruit_AMG88xx 
+ *
+ * Connections
+ * -----------
+ *  Break out    |    Arduino Uno
+ *  -----------------------------
+ *      VIN      |      5V
+ *      GND      |      GND
+ *      SDA      |      A4
+ *      SCL      |      A5
+  */
+
 #include <Wire.h>
 #include <Adafruit_AMG88xx.h>
 
@@ -24,6 +45,7 @@ Adafruit_AMG88xx amg;
 
 float pixels[AMG88xx_PIXEL_ARRAY_SIZE];
 int ambientTemperature;
+int totalTemperature;
 
 void setup()
 {
@@ -31,20 +53,16 @@ void setup()
   Serial.println(F("AMG88xx pixels"));
 
   bool status;
-  int totalTemperature;
 
   // default settings
   status = amg.begin();
   if (!status)
   {
     Serial.println("Could not find a valid AMG88xx sensor, check wiring!");
-    while (1)
-      ;
+    while (1);
   }
 
   Serial.println("-- Pixels Test --");
-
-  Serial.println();
 
   delay(100); // let sensor boot up
 
@@ -67,9 +85,10 @@ void loop()
   Serial.print("[");
   for (int i = 1; i <= AMG88xx_PIXEL_ARRAY_SIZE; i++)
   {
+    /* Check if the current temperature is  */
     if (abs(ambientTemperature - pixels[i - 1]) > 2)
     {
-      Serial.print("###");
+      Serial.print(pixels[i - 1]);
     }
     else
     {
