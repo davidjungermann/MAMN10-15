@@ -17,7 +17,7 @@
   BSD license, all text above must be included in any redistribution
  ***************************************************************************/
 
- /*  
+/*  
  Components
  * ----------
  *  - Arduino Uno
@@ -41,11 +41,25 @@
 #include <Wire.h>
 #include <Adafruit_AMG88xx.h>
 
-Adafruit_AMG88xx amg;
+#define columnSize 8
 
+Adafruit_AMG88xx amg;
 float pixels[AMG88xx_PIXEL_ARRAY_SIZE];
 int ambientTemperature;
 int totalTemperature;
+int column1[columnSize] = {1, 9, 17, 25, 33, 41, 49, 57};
+
+bool checkElementInArray(int column[], int element)
+{
+  for (int i = 0; i < columnSize; i++)
+  {
+    if (column[i] == element)
+    {
+      return true;
+    }
+  }
+  return false;
+}
 
 void setup()
 {
@@ -59,7 +73,8 @@ void setup()
   if (!status)
   {
     Serial.println("Could not find a valid AMG88xx sensor, check wiring!");
-    while (1);
+    while (1)
+      ;
   }
 
   Serial.println("-- Pixels Test --");
@@ -79,15 +94,15 @@ void setup()
 
 void loop()
 {
-  //read all the pixels
-  amg.readPixels(pixels);
-
-  Serial.print("[");
   for (int i = 1; i <= AMG88xx_PIXEL_ARRAY_SIZE; i++)
   {
     /* Check if the current temperature is  */
     if (abs(ambientTemperature - pixels[i - 1]) > 2)
     {
+      if(checkElementInArray(column1, i)) {
+        //Serial.println("Robot head left");
+        //delay(10000);
+      }
       Serial.print("###");
     }
     else
@@ -100,7 +115,12 @@ void loop()
   }
   Serial.println("]");
   Serial.println();
+  //read all the pixels
+  amg.readPixels(pixels);
 
-  //delay a second
-  delay(1000);
+  Serial.print("[");
+  
+      //delay a second
+      delay(1000);
 }
+    
