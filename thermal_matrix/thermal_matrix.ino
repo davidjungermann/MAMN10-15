@@ -47,9 +47,17 @@ Adafruit_AMG88xx amg;
 float pixels[AMG88xx_PIXEL_ARRAY_SIZE];
 int ambientTemperature;
 int totalTemperature;
+/* Ugly solution for this - will be rewritten later. */
+int column0[columnSize] = {0, 8, 16, 24, 32, 40, 48, 56};
 int column1[columnSize] = {1, 9, 17, 25, 33, 41, 49, 57};
+int column2[columnSize] = {2, 10, 18, 26, 34, 42, 50, 58};
+int column3[columnSize] = {3, 11, 19, 27, 35, 43, 51, 59};
+int column4[columnSize] = {4, 12, 20, 28, 36, 44, 52, 60};
+int column5[columnSize] = {5, 13, 21, 29, 37, 45, 53, 61};
+int column6[columnSize] = {6, 14, 22, 30, 38, 46, 54, 62};
+int column7[columnSize] = {7, 15, 23, 31, 39, 47, 55, 63};
 
-bool checkElementInArray(int column[], int element)
+bool elementInArray(int column[], int element)
 {
   for (int i = 0; i < columnSize; i++)
   {
@@ -94,33 +102,48 @@ void setup()
 
 void loop()
 {
-  for (int i = 1; i <= AMG88xx_PIXEL_ARRAY_SIZE; i++)
+  for (int i = 0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++)
   {
     /* Check if the current temperature is  */
-    if (abs(ambientTemperature - pixels[i - 1]) > 2)
+    if (abs(ambientTemperature - pixels[i]) > 3)
     {
-      if(checkElementInArray(column1, i)) {
-        //Serial.println("Robot head left");
-        //delay(10000);
+
+      if(elementInArray(column0, i)) {
+        Serial.println("Robot head hard left at: " + String(7.5 * 4) + " degrees");
       }
-      Serial.print("###");
+      
+      if(elementInArray(column1, i)) {
+        Serial.println("Robot head left at: " + String(7.5 * 3) + " degrees");
+      }
+      
+      if(elementInArray(column2, i)) {
+        Serial.println("Robot head slight left at: " + String(7.5 * 2) + " degrees");
+      }
+
+      if(elementInArray(column3, i)) {
+        Serial.println("Robot head left center at: " + String(7.5) + " degrees");
+      }
+      
+      if(elementInArray(column4, i)) {
+        Serial.println("Robot head right center at: " + String(7.5) + " degrees");
+      }
+
+      if(elementInArray(column5, i)) {
+        Serial.println("Robot head slight right at: " + String(7.5 * 2) + " degrees");
+      }
+
+      if(elementInArray(column6, i)) {
+        Serial.println("Robot head right at: " + String(7.5 * 3) + " degrees");
+      }
+
+     if(elementInArray(column7, i)) {
+        Serial.println("Robot head hard right at: " + String(7.5 * 4) + " degrees");
+      }
+      delay(1000);
+      break;
     }
-    else
-    {
-      Serial.print(pixels[i - 1]);
-    }
-    Serial.print(", ");
-    if (i % 8 == 0)
-      Serial.println();
   }
-  Serial.println("]");
-  Serial.println();
   //read all the pixels
   amg.readPixels(pixels);
-
-  Serial.print("[");
-  
-      //delay a second
-      delay(1000);
 }
     
