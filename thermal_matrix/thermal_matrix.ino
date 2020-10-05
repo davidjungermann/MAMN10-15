@@ -59,8 +59,7 @@ void setup()
   if (!status)
   {
     Serial.println("Could not find a valid AMG88xx sensor, check wiring!");
-    while (1)
-      ;
+    while (1);
   }
 
   Serial.println("-- Pixels Test --");
@@ -80,6 +79,9 @@ void setup()
 
 void loop()
 {
+  //read all the pixels
+  amg.readPixels(pixels);
+  
   for (int i = 0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++)
   {
     /* Check if the current temperature is  */
@@ -123,6 +125,4 @@ void loop()
       break;
     }
   }
-  //read all the pixels
-  amg.readPixels(pixels);
 }
