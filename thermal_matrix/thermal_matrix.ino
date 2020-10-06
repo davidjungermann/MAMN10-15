@@ -82,7 +82,7 @@ void loop()
   for (int i = 0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++)
   {
     /* Check if the current temperature is  */
-    if (abs(ambientTemperature - pixels[i]) > 3)
+    if (pixels[i] - ambientTemperature > 3)
     {
 
       if (i % 8 == 0)
