@@ -42,16 +42,16 @@
 #include <Adafruit_AMG88xx.h>
 
 #define columnSize 8
-#define temperatureDiff 3
 
 Adafruit_AMG88xx amg;
 float pixels[AMG88xx_PIXEL_ARRAY_SIZE];
-int ambientTemperature = 0;
-int totalTemperature = 0;
+int ambientTemperature;
+int totalTemperature;
 
 void setup()
 {
   Serial.begin(9600);
+  Serial.println(F("AMG88xx pixels"));
 
   bool status;
 
@@ -62,10 +62,10 @@ void setup()
     while (1);
   }
 
-  Serial.println("Sensor booting up");
-  delay(1000);
+  Serial.println("-- Pixels Test --");
 
-  /* Calculate average temperature in order to diffrentiate objects from room. */
+  delay(100); // let sensor boot up
+
   amg.readPixels(pixels);
   for (int i = 0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++)
   {
@@ -73,20 +73,16 @@ void setup()
   }
   ambientTemperature = (totalTemperature / AMG88xx_PIXEL_ARRAY_SIZE);
   Serial.println("Average temperature: " + String(ambientTemperature));
-  
-  Serial.println(); 
+  Serial.println();
   delay(1000);
 }
 
 void loop()
 {
-  /* Start reading all pixels. Returns a 8x8 matrix. */
-  amg.readPixels(pixels);
-  
   for (int i = 0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++)
   {
-    /* Check if the current temperature is higher than ambientTemperature */
-    if ((pixels[i] - ambientTemperature) > temperatureDiff)
+    /* Check if the current temperature is  */
+    if (abs(ambientTemperature - pixels[i]) > 3)
     {
 
       if (i % 8 == 0)
@@ -126,4 +122,6 @@ void loop()
       break;
     }
   }
+  //read all the pixels
+  amg.readPixels(pixels);
 }
