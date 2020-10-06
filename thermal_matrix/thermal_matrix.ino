@@ -51,7 +51,6 @@ int totalTemperature;
 void setup()
 {
   Serial.begin(9600);
-  Serial.println(F("AMG88xx pixels"));
 
   bool status;
 
@@ -81,7 +80,7 @@ void loop()
 {
   for (int i = 0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++)
   {
-    /* Check if the current temperature is  */
+    /* Check if the current temperature is higher than ambient. */
     if (pixels[i] - ambientTemperature > 3)
     {
 
