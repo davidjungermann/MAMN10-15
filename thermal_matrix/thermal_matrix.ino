@@ -46,13 +46,12 @@
 
 Adafruit_AMG88xx amg;
 float pixels[AMG88xx_PIXEL_ARRAY_SIZE];
-int ambientTemperature;
-int totalTemperature;
+int ambientTemperature = 0;
+int totalTemperature = 0;
 
 void setup()
 {
   Serial.begin(9600);
-  Serial.println(F("AMG88xx pixels"));
 
   bool status;
 
@@ -74,7 +73,8 @@ void setup()
   }
   ambientTemperature = (totalTemperature / AMG88xx_PIXEL_ARRAY_SIZE);
   Serial.println("Average temperature: " + String(ambientTemperature));
-  Serial.println();
+  
+  Serial.println(); 
   delay(1000);
 }
 
@@ -85,8 +85,8 @@ void loop()
   
   for (int i = 0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++)
   {
-    /* Check if the current temperature is different from ambientTemperature */
-    if (abs(ambientTemperature - pixels[i]) > temperatureDiff)
+    /* Check if the current temperature is higher than ambientTemperature */
+    if ((pixels[i] - ambientTemperature) > temperatureDiff)
     {
 
       if (i % 8 == 0)
