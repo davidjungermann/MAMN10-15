@@ -36,6 +36,8 @@
  *      GND      |      GND
  *      SDA      |      A4
  *      SCL      |      A5
+ *      
+ * This is a simple demo program that illustrates how the AMG8833 sensor can be used with Arduino in a prototype in part 1 of MAMN10. 
   */
 
 #include <Wire.h>
@@ -45,7 +47,7 @@
 
 Adafruit_AMG88xx amg;
 float pixels[AMG88xx_PIXEL_ARRAY_SIZE];
-int ambientTemperature;
+int averageTemperature;
 int totalTemperature;
 
 void setup()
@@ -61,15 +63,15 @@ void setup()
     while (1);
   }
 
-  delay(100); // let sensor boot up
+  delay(1000); // let sensor boot up
 
   amg.readPixels(pixels);
   for (int i = 0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++)
   {
     totalTemperature += pixels[i];
   }
-  ambientTemperature = (totalTemperature / AMG88xx_PIXEL_ARRAY_SIZE);
-  Serial.println("Average temperature: " + String(ambientTemperature));
+  averageTemperature = (totalTemperature / AMG88xx_PIXEL_ARRAY_SIZE);
+  Serial.println("Average temperature: " + String(averageTemperature));
   Serial.println();
   delay(1000);
 }
@@ -81,8 +83,8 @@ void loop()
   
   for (int i = 0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++)
   {
-    /* Check if the current temperature is higher than ambient. */
-    if (pixels[i] - ambientTemperature > 3)
+    /* Check if the current temperature is higher than average. */
+    if (pixels[i] - averageTemperature > 3)
     {
       /* Modulo calculations in order to divide the 64 pixels into columns to detect the various angles at. */
       if (i % 8 == 0)
@@ -117,7 +119,7 @@ void loop()
       {
         Serial.println("Robot head hard right at: " + String(7.5 * 4) + " degrees");
       }
-
+      /*Added delay to make demos more comprehensible. */
       delay(1000);
       break;
     }
