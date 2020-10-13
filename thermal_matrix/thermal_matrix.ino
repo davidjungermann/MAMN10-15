@@ -57,11 +57,9 @@ void setup()
   status = amg.begin();
   if (!status)
   {
-    Serial.println("Could not find a valid AMG88xx sensor, check wiring!");
+    Serial.println("Could not find a valid AMG8833 sensor, check wiring!");
     while (1);
   }
-
-  Serial.println("-- Pixels Test --");
 
   delay(100); // let sensor boot up
 
@@ -78,12 +76,15 @@ void setup()
 
 void loop()
 {
+  //read all the pixels
+  amg.readPixels(pixels);
+  
   for (int i = 0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++)
   {
     /* Check if the current temperature is higher than ambient. */
     if (pixels[i] - ambientTemperature > 3)
     {
-
+      /* Modulo calculations in order to divide the 64 pixels into columns to detect the various angles at. */
       if (i % 8 == 0)
       {
         Serial.println("Robot head hard left at: " + String(7.5 * 4) + " degrees");
@@ -121,6 +122,4 @@ void loop()
       break;
     }
   }
-  //read all the pixels
-  amg.readPixels(pixels);
 }
