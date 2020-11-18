@@ -1,0 +1,34 @@
+   <?xml version="1.0"?>    		
+    <group name="Summation" description="adds two inputs">
+
+         <description type="text">
+            Module that sums its two inputs element by element.
+            Both inputs must have the same size.
+         </description>
+      	            
+        <xample description="A simple example">
+        <module
+           class="Summation"
+           name="Summation"
+        />
+        </example>
+          
+        <input name="INPUT1" description="The first input" />
+        <input name="INPUT2" description="The second input" />
+     
+        <output name="OUTPUT" description="The output" size_set="INPUT1, INPUT2" />
+          
+        <module class="Summation" />
+     
+        <author>
+           <name>Jan Morén</name>
+           <email>jan.moren@lucs.lu.se</email>
+           <affiliation>Lund Univeristy Cognitive Science</affiliation>
+           <homepage>http://www.lucs.lu.se/People/Jan.Moren</homepage>
+        </author>
+        <files>
+            <file>Summation.h</file>
+            <file>Summation.cc</file>
+            <file>Summation.ikc</file>
+        </files>
+    </group>
