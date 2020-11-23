@@ -6,7 +6,7 @@
             Both inputs must have the same size.
          </description>
       	            
-        <xample description="A simple example">
+        <example description="A simple example">
         <module
            class="Summation"
            name="Summation"
@@ -18,7 +18,7 @@
      
         <output name="OUTPUT" description="The output" size_set="INPUT1, INPUT2" />
           
-        <module class="Summation" />
+        <link class="Summation" />
      
         <author>
            <name>Jan Morén</name>
