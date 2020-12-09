@@ -1,28 +1,26 @@
 //
-//  TouchBoard.h
+//  Arduino.h
 //
 //
-//  Created by Isak Amundsson on 2018-09-28.
+//  Created by David Jungermann on 2020-12-03.
 //
 
-#ifndef TouchBoard_
-#define TouchBoard_
+#ifndef Arduino_
+#define Arduino_
 
 #include "IKAROS.h"
 #include "stdio.h"
-class TouchBoard: public Module
+class Arduino: public Module
 {
 public:
     Serial *s;
     char    *rcvmsg;
-    TouchBoard(Parameter * p);
-    virtual ~TouchBoard();
+    Arduino(Parameter * p);
+    virtual ~Arduino();
     static Module *Create(Parameter * p);
     void Init();
     void PrintValue();
     void Tick();
-
-
     float *	output;
 };
-#endif /* TouchBoard_h*/
+#endif /* Arduino_h*/
