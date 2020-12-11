@@ -21,24 +21,29 @@ Module *Arduino::Create(Parameter *p)
 
 Arduino::Arduino(Parameter *p) : Module(p)
 {
-    s = NULL;
-    s = new Serial(GetValue("port"), 57600);
+    printf("Konst!\n");
+    //s = NULL;
+    //s = new Serial(GetValue("port"), 57600);
 }
 
 Arduino::~Arduino()
 {
-    s->Close();
+    printf("Dest!\n");
+    //s->Close();
 }
 
 void Arduino::Init()
 {
-    s->Flush();
-    rcvmsg = new char[100];
-    output = GetOutputArray("OUTPUT");
+    printf("Init!\n");
+    //s->Flush();
+    //rcvmsg = new char[100];
+    //output = GetOutputArray("OUTPUT");
 }
 
 void Arduino::Tick()
 {
+    printf("Tick!\n");
+    /*std::cout << "Tjena från tick!";
     int count = s->ReceiveBytes(rcvmsg, 100, 10);
     // std::cout << rcvmsg;
     // std::cout << "\n";
@@ -70,7 +75,7 @@ void Arduino::Tick()
     // if(count > 0)
     //     std::cout<<rcvmsg;
     // else
-    //     std::cout<<"***\n";
+    //     std::cout<<"***\n";*/
 }
 
 void Arduino::PrintValue()
