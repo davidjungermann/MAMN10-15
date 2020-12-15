@@ -11,8 +11,7 @@
 #include <sstream>
 #include <string>
 #include <stdio.h>
-#include<unistd.h>
-
+#include <unistd.h>
 
 using namespace ikaros;
 
@@ -25,6 +24,7 @@ Arduino::Arduino(Parameter *p) : Module(p)
 {
 
     s = NULL;
+    /* Retrieves port where Arduino is connected from class file. Default is /dev/ttyACM0 on my Ubuntu 20.10 machine. */
     s = new Serial(GetValue("port"), 9600);
 }
 
