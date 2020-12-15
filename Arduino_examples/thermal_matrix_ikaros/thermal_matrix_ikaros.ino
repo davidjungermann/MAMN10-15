@@ -52,7 +52,7 @@ Adafruit_AMG88xx amg;
 float pixels[AMG88xx_PIXEL_ARRAY_SIZE];
 int averageTemperature;
 int totalTemperature;
-double currentAngle;
+float currentAngle;
 
 void setup()
 {
@@ -122,7 +122,6 @@ void loop()
         currentAngle = 7.5 * 4;
       }
       Serial.println(currentAngle);
-      
       delay(delayTime);
       break;
     }

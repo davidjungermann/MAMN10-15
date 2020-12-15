@@ -36,15 +36,14 @@ Arduino::~Arduino()
 void Arduino::Init()
 {
     s->Flush();
-    rcvmsg = new char[16];
+    rcvmsg = new char[8];
     output = GetOutputArray("OUTPUT");
 }
 
 void Arduino::Tick()
 {
-    int count = s->ReceiveBytes(rcvmsg, 16);
+    int count = s->ReceiveBytes(rcvmsg, 8);
     std::cout << rcvmsg;
-    std::cout << "\n";
 }
 
 static InitClass init("Arduino", &Arduino::Create, "Source/UserModules/Arduino/");
