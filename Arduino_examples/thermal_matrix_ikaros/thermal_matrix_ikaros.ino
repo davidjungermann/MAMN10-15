@@ -71,7 +71,6 @@ void setup()
     totalTemperature += pixels[i];
   }
   averageTemperature = (totalTemperature / AMG88xx_PIXEL_ARRAY_SIZE);
-  Serial.println("Average temperature: " + String(averageTemperature));
 }
 
 void loop()
@@ -88,35 +87,35 @@ void loop()
       /* Angles of temperature changes will be sent over Serial to an Ikaros module. Left is represented with negative values, and right is represented with positive values. */
       if (i % 8 == 0)
       {
-        Serial.println(-7.5 * 4);
+        Serial.println(String(-7.5 * 4));
       }
       else if (i % 8 == 1)
       {
-        Serial.println(-7.5 * 3);
+        Serial.println(String(-7.5 * 3));
       }
       else if (i % 8 == 2)
       {
-        Serial.println(-7.5 * 2);
+        Serial.println(String(-7.5 * 2));
       }
       else if (i % 8 == 3)
       {
-        Serial.println(-7.5);
+        Serial.println(String(-7.5));
       }
       else if (i % 8 == 4)
       {
-        Serial.println(7.5);
+        Serial.println(String(7.5));
       }
       else if (i % 8 == 5)
       {
-        Serial.println(7.5 * 2);
+        Serial.println(String(7.5 * 2));
       }
       else if (i % 8 == 6)
       {
-        Serial.println(7.5 * 3);
+        Serial.println(String(7.5 * 3));
       }
       else if (i % 8 == 7)
       {
-        Serial.println(7.5 * 4);
+        Serial.println(String(7.5 * 4));
       }
       break;
     }
