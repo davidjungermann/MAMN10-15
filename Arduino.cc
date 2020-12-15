@@ -11,6 +11,8 @@
 #include <sstream>
 #include <string>
 #include <stdio.h>
+#include<unistd.h>
+
 
 using namespace ikaros;
 
@@ -33,7 +35,6 @@ Arduino::~Arduino()
 
 void Arduino::Init()
 {
-    printf("Init!\n");
     s->Flush();
     rcvmsg = new char[100];
     output = GetOutputArray("OUTPUT");
@@ -41,7 +42,7 @@ void Arduino::Init()
 
 void Arduino::Tick()
 {
-    int count = s->ReceiveBytes(rcvmsg, 1000);
+    int count = s->ReceiveBytes(rcvmsg, 100);
     std::cout << rcvmsg;
     std::cout << "\n";
     std::stringstream stream(rcvmsg);
