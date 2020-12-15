@@ -22,31 +22,30 @@ Module *Arduino::Create(Parameter *p)
 Arduino::Arduino(Parameter *p) : Module(p)
 {
     printf("Konst!\n");
-    //s = NULL;
-    //s = new Serial(GetValue("port"), 57600);
+    s = NULL;
+    s = new Serial(GetValue("port"), 9600);
 }
 
 Arduino::~Arduino()
 {
     printf("Dest!\n");
-    //s->Close();
+    s->Close();
 }
 
 void Arduino::Init()
 {
     printf("Init!\n");
-    //s->Flush();
-    //rcvmsg = new char[100];
-    //output = GetOutputArray("OUTPUT");
+    s->Flush();
+    rcvmsg = new char[100];
+    output = GetOutputArray("OUTPUT");
 }
 
 void Arduino::Tick()
 {
-    printf("Tick!\n");
-    /*std::cout << "Tjena från tick!";
+    //printf("Tick!\n");
     int count = s->ReceiveBytes(rcvmsg, 100, 10);
-    // std::cout << rcvmsg;
-    // std::cout << "\n";
+    std::cout << rcvmsg;
+    std::cout << "\n";
     std::stringstream stream(rcvmsg);
     int i = 0;
     while (1)
@@ -58,7 +57,7 @@ void Arduino::Tick()
         //int val =  1024-n;
         int val = n;
         output[i] = val;
-        //std::cout << val<< " ";
+        std::cout << val<< " ";
         i++;
     }
     //std::cout << "\n";
@@ -75,7 +74,7 @@ void Arduino::Tick()
     // if(count > 0)
     //     std::cout<<rcvmsg;
     // else
-    //     std::cout<<"***\n";*/
+    //     std::cout<<"***\n";
 }
 
 void Arduino::PrintValue()
