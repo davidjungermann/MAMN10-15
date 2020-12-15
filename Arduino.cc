@@ -36,13 +36,13 @@ Arduino::~Arduino()
 void Arduino::Init()
 {
     s->Flush();
-    rcvmsg = new char[100];
+    rcvmsg = new char[16];
     output = GetOutputArray("OUTPUT");
 }
 
 void Arduino::Tick()
 {
-    int count = s->ReceiveBytes(rcvmsg, 100);
+    int count = s->ReceiveBytes(rcvmsg, 16);
     std::cout << rcvmsg;
     std::cout << "\n";
 }
