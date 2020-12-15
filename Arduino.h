@@ -19,7 +19,6 @@ public:
     virtual ~Arduino();
     static Module *Create(Parameter * p);
     void Init();
-    void PrintValue();
     void Tick();
     float *	output;
 };
