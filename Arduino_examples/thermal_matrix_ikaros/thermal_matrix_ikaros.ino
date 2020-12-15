@@ -45,10 +45,14 @@
 
 #define columnSize 8
 
+/* Delay is added to accomodate for head movement, and delays in communication. This value will have to be evaluated and tested. */
+#define delayTime 1000
+
 Adafruit_AMG88xx amg;
 float pixels[AMG88xx_PIXEL_ARRAY_SIZE];
 int averageTemperature;
 int totalTemperature;
+double currentAngle;
 
 void setup()
 {
@@ -87,36 +91,39 @@ void loop()
       /* Angles of temperature changes will be sent over Serial to an Ikaros module. Left is represented with negative values, and right is represented with positive values. */
       if (i % 8 == 0)
       {
-        Serial.println(String(-7.5 * 4));
+        currentAngle = -7.5 * 4;
       }
       else if (i % 8 == 1)
       {
-        Serial.println(String(-7.5 * 3));
+        currentAngle = -7.5 * 3;
       }
       else if (i % 8 == 2)
       {
-        Serial.println(String(-7.5 * 2));
+        currentAngle = -7.5 * 2;
       }
       else if (i % 8 == 3)
       {
-        Serial.println(String(-7.5));
+        currentAngle = -7.5;
       }
       else if (i % 8 == 4)
       {
-        Serial.println(String(7.5));
+        currentAngle = 7.5;
       }
       else if (i % 8 == 5)
       {
-        Serial.println(String(7.5 * 2));
+        currentAngle = 7.5 * 2;
       }
       else if (i % 8 == 6)
       {
-        Serial.println(String(7.5 * 3));
+        currentAngle = 7.5 * 3;
       }
       else if (i % 8 == 7)
       {
-        Serial.println(String(7.5 * 4));
+        currentAngle = 7.5 * 4;
       }
+      Serial.println(currentAngle);
+      
+      delay(delayTime);
       break;
     }
   }
