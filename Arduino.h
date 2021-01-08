@@ -10,16 +10,17 @@
 
 #include "IKAROS.h"
 #include "stdio.h"
-class Arduino: public Module
+class Arduino : public Module
 {
 public:
     Serial *s;
-    char    *rcvmsg;
-    Arduino(Parameter * p);
+    char *rcvmsg;
+    Arduino(Parameter *p);
     virtual ~Arduino();
-    static Module *Create(Parameter * p);
+    static Module *Create(Parameter *p);
     void Init();
     void Tick();
-    float *	output;
+    float *output;
+    float value;
 };
 #endif /* Arduino_h*/
