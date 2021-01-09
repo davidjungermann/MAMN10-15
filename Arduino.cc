@@ -36,14 +36,20 @@ Arduino::~Arduino()
 void Arduino::Init()
 {
     s->Flush();
-    rcvmsg = new char[8];
+    rcvmsg = new char[1];
     output = GetOutputArray("OUTPUT");
+    float value;
 }
 
 void Arduino::Tick()
 {
-    int count = s->ReceiveBytes(rcvmsg, 8);
-    std::cout << rcvmsg;
+    s->ReceiveBytes(rcvmsg, 8);
+    std::stringstream stream(rcvmsg);
+    stream >> value;
+
+    /* Hopefully this adds the last value to the output array. */
+    output[0] = value;
+    std::cout << output[0] << " ";
 }
 
 static InitClass init("Arduino", &Arduino::Create, "Source/UserModules/Arduino/");
