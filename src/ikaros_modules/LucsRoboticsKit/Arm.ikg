@@ -26,8 +26,8 @@
 		class		=	"FunctionGenerator"
 		name		=	"GoalPosition1"
 		type		=	"sin"
-		frequency	=	"0.0314"
-		offset      =	"180"
+		frequency	=	"0.314"
+		offset      =	"0"
 		amplitude	=	"60"
 		shift		=	"0.0"
 	/>
@@ -45,7 +45,7 @@
     <module class = "Arduino" name = "Arduino" />
 	
 	<!-- Order is important -->
-	<connection  source = "GoalPosition1.OUTPUT"  target = "Dynamixel.GOAL_POSITION" />
+	<connection  source = "Arduino.OUTPUT"  target = "Dynamixel.GOAL_POSITION" />
 
 	<connection  source = "Speed.OUTPUT"  target = "Dynamixel.MOVING_SPEED" />
 

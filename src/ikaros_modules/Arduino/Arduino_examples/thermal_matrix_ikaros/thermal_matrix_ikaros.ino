@@ -91,35 +91,35 @@ void loop()
       /* Angles of temperature changes will be sent over Serial to an Ikaros module. Left is represented with negative values, and right is represented with positive values. */
       if (i % 8 == 0)
       {
-        currentAngle = -7.5 * 4;
+        currentAngle = 30 + 7.5 * 1;
       }
       else if (i % 8 == 1)
       {
-        currentAngle = -7.5 * 3;
+        currentAngle = 30 + 7.5 * 2;
       }
       else if (i % 8 == 2)
       {
-        currentAngle = -7.5 * 2;
+        currentAngle = 30 + 7.5 * 3;
       }
       else if (i % 8 == 3)
       {
-        currentAngle = -7.5;
+        currentAngle = 30 + 7.5 * 4;
       }
       else if (i % 8 == 4)
       {
-        currentAngle = 7.5;
+        currentAngle = 30 + 7.5 * 5;
       }
       else if (i % 8 == 5)
       {
-        currentAngle = 7.5 * 2;
+        currentAngle = 30 + 7.5 * 6;
       }
       else if (i % 8 == 6)
       {
-        currentAngle = 7.5 * 3;
+        currentAngle = 30 + 7.5 * 7;
       }
       else if (i % 8 == 7)
       {
-        currentAngle = 7.5 * 4;
+        currentAngle = 30 + 7.5 * 8;
       }
       Serial.println(currentAngle);
       delay(delayTime);

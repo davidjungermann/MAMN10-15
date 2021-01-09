@@ -12,6 +12,7 @@
 #include <string>
 #include <stdio.h>
 #include <unistd.h>
+#include <iostream>
 
 using namespace ikaros;
 
@@ -25,32 +26,31 @@ Arduino::Arduino(Parameter *p) : Module(p)
     s = NULL;
 
     /* Retrieves port where Arduino is connected from class file. Default is /dev/ttyACM0 on my Ubuntu 20.10 machine. */
-    //s = new Serial(GetValue("port"), 9600);
+    s = new Serial(GetValue("port"), 9600);
 }
 
 Arduino::~Arduino()
 {
-    //s->Close();
+    s->Close();
 }
 
 void Arduino::Init()
 {
-    //s->Flush();
+    s->Flush();
     rcvmsg = new char[1];
     output = GetOutputArray("OUTPUT");
     float value;
-    output[0] = 300.00;
 }
 
 void Arduino::Tick()
 {
-    //s->ReceiveBytes(rcvmsg, 8);
-    //std::stringstream stream(rcvmsg);
-    //stream >> value;
+    s->ReceiveBytes(rcvmsg, 8);
+    std::stringstream stream(rcvmsg);
+    stream >> value;
 
     /* Hopefully this adds the last value to the output array. */
-    //output[0] = value;
-    //std::cout << output[0] << " ";
+    output[0] = value;
+    std::cout << output[0] << " ";
 }
 
 static InitClass init("Arduino", &Arduino::Create, "Source/UserModules/Arduino/");
