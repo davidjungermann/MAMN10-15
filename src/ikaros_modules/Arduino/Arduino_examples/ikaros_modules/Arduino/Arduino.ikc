@@ -9,7 +9,7 @@
 </description>
 
 
-<example description="Serial communication">
+<example description="A simple example">
 	<module
 		class="Arduino"
 		name="ARDUINO"
@@ -22,9 +22,7 @@
 	type="string"
 	default="/dev/ttyACM0"/>
 
- <output name="OUTPUT" description="Arduino serial communication output" size="1" />
-
- <link class="Arduino" />
+ <output name="OUTPUT" description="Arduino serial communication output" size="11" />
 
 <author>
 	<name>David Jungermann</name>

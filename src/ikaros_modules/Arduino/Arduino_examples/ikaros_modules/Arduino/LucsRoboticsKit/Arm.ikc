@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+
+<group name="Arm" description="Moving Dynamixel arm">
+
+
+<description type="text">
+	Moving Dynamixel arm example
+</description>
+
+
+<example description="Arm">
+	<module
+		class="Arm"
+		name="Arm"
+	/>
+</example>
+
+<input name="INPUT" description="Input from Serial module" />
+
+<link class="Arm" />
+
+<author>
+	<name>David Jungermann</name>
+	<email>dic15dju@student.lu.se</email>
+	<affiliation>Lunds Tekniska Högskola</affiliation>
+</author>
+
+<files>
+	<file>Arduino.ikc</file>
+</files>
+
+</group>

@@ -11,6 +11,7 @@
 #include <sstream>
 #include <string>
 #include <stdio.h>
+#include <unistd.h>
 
 using namespace ikaros;
 
@@ -22,60 +23,34 @@ Module *Arduino::Create(Parameter *p)
 Arduino::Arduino(Parameter *p) : Module(p)
 {
     s = NULL;
-    s = new Serial(GetValue("port"), 57600);
+
+    /* Retrieves port where Arduino is connected from class file. Default is /dev/ttyACM0 on my Ubuntu 20.10 machine. */
+    //s = new Serial(GetValue("port"), 9600);
 }
 
 Arduino::~Arduino()
 {
-    s->Close();
+    //s->Close();
 }
 
 void Arduino::Init()
 {
-    s->Flush();
-    rcvmsg = new char[100];
+    //s->Flush();
+    rcvmsg = new char[1];
     output = GetOutputArray("OUTPUT");
+    float value;
+    output[0] = 300.00;
 }
 
 void Arduino::Tick()
 {
-    int count = s->ReceiveBytes(rcvmsg, 100, 10);
-    // std::cout << rcvmsg;
-    // std::cout << "\n";
-    std::stringstream stream(rcvmsg);
-    int i = 0;
-    while (1)
-    {
-        int n;
-        stream >> n;
-        if (!stream)
-            break;
-        //int val =  1024-n;
-        int val = n;
-        output[i] = val;
-        //std::cout << val<< " ";
-        i++;
-    }
-    //std::cout << "\n";
-    // for (int i =0; i<12; i++){
-    //   std::stringstream st;
-    //   st << rcvmsg[i];
-    //   int p;
-    //   st >> p;
-    //   output[i]= p;
-    //   std::cout << output[i] << " ";
-    //   // std::cout << "\n";
-    // }
-    //std::cout << "\n";
-    // if(count > 0)
-    //     std::cout<<rcvmsg;
-    // else
-    //     std::cout<<"***\n";
-}
+    //s->ReceiveBytes(rcvmsg, 8);
+    //std::stringstream stream(rcvmsg);
+    //stream >> value;
 
-void Arduino::PrintValue()
-{
-    std::cout << "Value printed" << std::endl;
+    /* Hopefully this adds the last value to the output array. */
+    //output[0] = value;
+    //std::cout << output[0] << " ";
 }
 
 static InitClass init("Arduino", &Arduino::Create, "Source/UserModules/Arduino/");
