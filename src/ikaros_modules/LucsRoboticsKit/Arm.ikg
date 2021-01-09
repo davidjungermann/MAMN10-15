@@ -16,7 +16,7 @@
         _device   	 = "/dev/cu.usbserial-A8006Esq"
 		device		 = "/dev/ttyUSB0"
 		index_mode 	 = "indirect"
-		servo_id	 = "1 2 3"
+		servo_id	 = "1"
 		angle_unit 	 = "degrees"
 	/>
     
@@ -33,25 +33,6 @@
 	/>
 	<module
 		class		=	"FunctionGenerator"
-		name		=	"GoalPosition2"
-		type		=	"sin"
-		frequency	=	"0.314"
-		offset      =	"150"
-		amplitude	=	"20"
-		shift		=	"10"
-
-	/>
-	<module
-		class		=	"FunctionGenerator"
-		name		=	"GoalPosition3"
-		type		=	"sin"
-		frequency	=	"0.314"
-		offset      =	"210"
-		amplitude	=	"20"
-		shift		=	"0.0"
-	/>
-	<module
-		class		=	"FunctionGenerator"
 		name		=	"Speed"
 		type		=	"sin"
 		frequency	=	"0.0314"
@@ -60,15 +41,12 @@
 		shift		=	"150"
 	/>
 
-    <module class = "Constant" name = "TorqueLimit" data = "1 1 1" />
+    <module class = "Constant" name = "TorqueLimit" data = "1" />
+    <module class = "Arduino" name = "Arduino" />
 	
 	<!-- Order is important -->
-	<connection  source = "GoalPosition3.OUTPUT"  target = "Dynamixel.GOAL_POSITION" />
-	<connection  source = "GoalPosition2.OUTPUT"  target = "Dynamixel.GOAL_POSITION" />
 	<connection  source = "GoalPosition1.OUTPUT"  target = "Dynamixel.GOAL_POSITION" />
 
-	<connection  source = "Speed.OUTPUT"  target = "Dynamixel.MOVING_SPEED" />
-	<connection  source = "Speed.OUTPUT"  target = "Dynamixel.MOVING_SPEED" />
 	<connection  source = "Speed.OUTPUT"  target = "Dynamixel.MOVING_SPEED" />
 
     <connection source = "TorqueLimit.OUTPUT" target = "Dynamixel.TORQUE_LIMIT" />
