@@ -45,9 +45,6 @@
 
 #define columnSize 8
 
-/* Delay is added to accomodate for head movement, and delays in communication. This value will have to be evaluated and tested. */
-#define delayTime 1000
-
 Adafruit_AMG88xx amg;
 float pixels[AMG88xx_PIXEL_ARRAY_SIZE];
 int averageTemperature;
@@ -67,7 +64,8 @@ void setup()
     while (1);
   }
 
-  delay(1000); // let sensor boot up
+ Serial.println("----- Sensor booting up -----");
+  delay(2000); // let sensor boot up
 
   amg.readPixels(pixels);
   for (int i = 0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++)
@@ -85,7 +83,7 @@ void loop()
   for (int i = 0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++)
   {
     /* Check if the current temperature is higher than average. */
-    if (pixels[i] - averageTemperature > 3)
+    if (pixels[i] - averageTemperature > 5)
     {
       /* Modulo calculations in order to divide the 64 pixels into columns to detect the various angles at. */
       /* Angles of temperature changes will be sent over Serial to an Ikaros module. Left is represented with negative values, and right is represented with positive values. */
@@ -122,7 +120,6 @@ void loop()
         currentAngle = 30 + 7.5 * 8;
       }
       Serial.println(currentAngle);
-      delay(delayTime);
       break;
     }
   }

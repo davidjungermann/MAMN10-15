@@ -49,8 +49,11 @@ void Arduino::Tick()
     stream >> value;
 
     /* Hopefully this adds the last value to the output array. */
-    output[0] = value;
-    std::cout << output[0] << " ";
+    if (value >= 30)
+    {
+        output[0] = value;
+        std::cout << output[0] << "\n";
+    }
 }
 
 static InitClass init("Arduino", &Arduino::Create, "Source/UserModules/Arduino/");
