@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <iostream>
+#include <unistd.h>
 
 using namespace ikaros;
 
@@ -39,19 +40,25 @@ void Arduino::Init()
     s->Flush();
     rcvmsg = new char[1];
     output = GetOutputArray("OUTPUT");
-    float value;
+    float currentValue;
+    float previousValue;
 }
 
 void Arduino::Tick()
 {
     s->ReceiveBytes(rcvmsg, 8);
     std::stringstream stream(rcvmsg);
-    stream >> value;
+    stream >> currentValue;
 
-    /* Hopefully this adds the last value to the output array. */
-    if (value >= 30)
+    /* Serial communiction sometimes yields invalid results. Filter these out. */
+    if (-30 <= currentValue <= 30 && abs(currentValue - previousValue) >= 7.5)
     {
+        float value;
+        value = currentValue + 150;
         output[0] = value;
+        previousValue = value;
+        //unsigned int microsecond = 1000000;
+        //usleep(3 * microsecond); //sleeps for 3 second
         std::cout << output[0] << "\n";
     }
 }

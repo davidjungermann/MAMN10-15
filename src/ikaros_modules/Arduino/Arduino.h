@@ -21,6 +21,7 @@ public:
     void Init();
     void Tick();
     float *output;
-    float value;
+    float currentValue;
+    float previousValue;
 };
 #endif /* Arduino_h*/

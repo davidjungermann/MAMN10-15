@@ -31,17 +31,9 @@
 		amplitude	=	"60"
 		shift		=	"0.0"
 	/>
-	<module
-		class		=	"FunctionGenerator"
-		name		=	"Speed"
-		type		=	"sin"
-		frequency	=	"0.0314"
-		offset      =	"1"
-		amplitude	=	"0.0"
-		shift		=	"150"
-	/>
-
+    
     <module class = "Constant" name = "TorqueLimit" data = "1" />
+    <module class = "Constant" name = "Speed" data = "0.1" />
     <module class = "Arduino" name = "Arduino" />
 	
 	<!-- Order is important -->
