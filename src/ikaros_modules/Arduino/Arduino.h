@@ -20,8 +20,12 @@ public:
     static Module *Create(Parameter *p);
     void Init();
     void Tick();
+    bool isValueInArray(float inputAngle, float applicableValues[]);
     float *output;
-    float currentValue;
-    float previousValue;
+    float currentInputAngle;
+    float newInputAngle;
+    float currentHeadPosition;
+    float newHeadPosition;
+    float applicableValues[8];
 };
 #endif /* Arduino_h*/

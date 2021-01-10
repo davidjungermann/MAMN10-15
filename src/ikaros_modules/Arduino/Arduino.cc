@@ -17,6 +17,9 @@
 
 using namespace ikaros;
 
+#define maxAnglePosition 330.0
+#define minAnglePosition 30.0
+
 Module *Arduino::Create(Parameter *p)
 {
     return new Arduino(p);
@@ -40,27 +43,55 @@ void Arduino::Init()
     s->Flush();
     rcvmsg = new char[1];
     output = GetOutputArray("OUTPUT");
-    float currentValue;
-    float previousValue;
+    float currentInputAngle;
+    float newInputAngle;
+    float currentHeadPosition;
+    float newHeadPosition;
 }
 
 void Arduino::Tick()
 {
+    /* Den tickar varje gång och sätter värdet + vinkeln varje gång, därför vi antingen alltid kommer till 30 eller 330.  */
+    /* Ett annat problem är att den rör sig, och sen tar in nya värden innan den är framme. */
+
+    float applicableValues[8] = {-30.0, -22.5, -15.0, -7.5, 7.5, 15.0, 22.5, 30.0};
     s->ReceiveBytes(rcvmsg, 8);
     std::stringstream stream(rcvmsg);
-    stream >> currentValue;
+    stream >> newInputAngle;
 
     /* Serial communiction sometimes yields invalid results. Filter these out. */
-    if (-30 <= currentValue <= 30 && abs(currentValue - previousValue) >= 7.5)
+
+    if (stream)
     {
-        float value;
-        value = currentValue + 150;
-        output[0] = value;
-        previousValue = value;
-        //unsigned int microsecond = 1000000;
-        //usleep(3 * microsecond); //sleeps for 3 second
-        std::cout << output[0] << "\n";
+        if (isValueInArray(newInputAngle, applicableValues))
+        {
+            if (newInputAngle >= 0)
+            {
+                newHeadPosition = min(newInputAngle + currentHeadPosition, maxAnglePosition);
+            }
+            else
+            {
+                newHeadPosition = max(newInputAngle + currentHeadPosition, minAnglePosition);
+            }
+
+            output[0] = newHeadPosition;
+            currentInputAngle = newInputAngle;
+            currentHeadPosition = newHeadPosition;
+            std::cout << output[0] << "\n";
+        }
     }
+}
+
+bool Arduino::isValueInArray(float inputAngle, float applicableValues[])
+{
+    for (int i = 0; i < 8; i++)
+    {
+        if (applicableValues[i] == inputAngle)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 static InitClass init("Arduino", &Arduino::Create, "Source/UserModules/Arduino/");

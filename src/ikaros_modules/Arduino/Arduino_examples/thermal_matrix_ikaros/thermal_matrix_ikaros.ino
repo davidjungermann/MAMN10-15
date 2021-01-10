@@ -50,6 +50,7 @@ float pixels[AMG88xx_PIXEL_ARRAY_SIZE];
 int averageTemperature;
 int totalTemperature;
 float currentAngle;
+float previousAngle;
 
 void setup()
 {
@@ -84,7 +85,7 @@ void loop()
   for (int i = 0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++)
   {
     /* Check if the current temperature is higher than average. */
-    if (pixels[i] - averageTemperature > 3)
+    if (pixels[i] - averageTemperature > 5)
     {
       /* Modulo calculations in order to divide the 64 pixels into columns to detect the various angles at. */
       /* Angles of temperature changes will be sent over Serial to an Ikaros module. Left is represented with negative values, and right is represented with positive values. */
@@ -120,8 +121,12 @@ void loop()
       {
         currentAngle = 7.5 * 4;
       }
-      Serial.println(currentAngle);
-      break;
+
+      if(currentAngle != previousAngle) {
+       Serial.println(currentAngle);
+       previousAngle = currentAngle;
+       break; 
+      }
     }
   }
 }
