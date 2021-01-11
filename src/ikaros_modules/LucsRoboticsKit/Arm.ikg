@@ -35,6 +35,7 @@
     <module class = "Constant" name = "TorqueLimit" data = "1" />
     <module class = "Constant" name = "Speed" data = "0.1" />
     <module class = "Arduino" name = "Arduino" />
+    <module class = "Constant" name = "isMoving" data = "0.1" />
 	
 	<!-- Order is important -->
 	<connection  source = "Arduino.OUTPUT"  target = "Dynamixel.GOAL_POSITION" />
@@ -42,8 +43,11 @@
 	<connection  source = "Speed.OUTPUT"  target = "Dynamixel.MOVING_SPEED" />
 
     <connection source = "TorqueLimit.OUTPUT" target = "Dynamixel.TORQUE_LIMIT" />
+
+    <connection source = "Dynamixel.FEEDBACK_PRESENT_POSITION" target = "Arduino.CURRENT_POSITION" />
+    <connection source = "Dynamixel.FEEDBACK_GOAL_POSITION" target = "Arduino.GOAL_POSITION" />
 	        
-	<view name = "Lucs Robotic Arm" object_size = "50" >
+	<view name = "Lucs Robotic Arm" object_size = "100" >
     	<!-- Dynamixel objects -->
         <object
             class	 = "Plot"
@@ -63,26 +67,6 @@
             w = "2" 	h = "2" 
             color 	 = "green"
             max 	 = "360"
-        />
-        <object
-            class	 = "Plot"
-            title	 = "Position Sent 2"
-            module	 = "GoalPosition2"
-            source 	 = "OUTPUT"
-            x = "2" 	y = "8"
-            w = "2" 	h = "2" 
-            color 	 = "blue"
-            max = "360"
-        />
-        <object
-            class	 = "Plot"
-            title	 = "Position Sent 3"
-            module	 = "GoalPosition3"
-            source 	 = "OUTPUT"
-            x = "4" 	y = "8"
-            w = "2" 	h = "2" 
-            color 	 = "red, green, blue"
-            max = "360"
         />
         <object
             class	 = "Plot"

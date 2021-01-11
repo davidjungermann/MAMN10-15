@@ -43,42 +43,39 @@ void Arduino::Init()
     s->Flush();
     rcvmsg = new char[1];
     output = GetOutputArray("OUTPUT");
-    float currentInputAngle;
-    float newInputAngle;
-    float currentHeadPosition;
-    float newHeadPosition;
+    currentPositionArray = GetInputArray("CURRENT_POSITION");
+    goalPositionArray = GetInputArray("GOAL_POSITION");
+    float inputAngle;
+    float previousInputAngle;
 }
 
 void Arduino::Tick()
 {
-    /* Den tickar varje gång och sätter värdet + vinkeln varje gång, därför vi antingen alltid kommer till 30 eller 330.  */
-    /* Ett annat problem är att den rör sig, och sen tar in nya värden innan den är framme. */
+    /* Fullösning - vi vill nog egentligen bara ta det första värdet från streamen, sen rensa streamen, och börja igen.  */
+    float currentPosition = round(currentPositionArray[0]);
+    float goalPosition = round(goalPositionArray[0]);
+    bool moving = abs(goalPosition - currentPosition) >= 2;
 
-    float applicableValues[8] = {-30.0, -22.5, -15.0, -7.5, 7.5, 15.0, 22.5, 30.0};
-    s->ReceiveBytes(rcvmsg, 8);
-    std::stringstream stream(rcvmsg);
-    stream >> newInputAngle;
-
-    /* Serial communiction sometimes yields invalid results. Filter these out. */
-
-    if (stream)
+    if (!moving)
     {
-        if (isValueInArray(newInputAngle, applicableValues))
-        {
-            if (newInputAngle >= 0)
-            {
-                newHeadPosition = min(newInputAngle + currentHeadPosition, maxAnglePosition);
-            }
-            else
-            {
-                newHeadPosition = max(newInputAngle + currentHeadPosition, minAnglePosition);
-            }
+        float applicableValues[8] = {-30.0, -22.5, -15.0, -7.5, 7.5, 15.0, 22.5, 30.0};
+        s->ReceiveBytes(rcvmsg, 8);
+        std::stringstream stream(rcvmsg);
+        stream >> inputAngle;
 
+        if (isValueInArray(inputAngle, applicableValues) && isPositionValid(inputAngle, currentPosition, goalPosition) && inputAngle != previousInputAngle)
+        {
+            float newHeadPosition = 0;
+            newHeadPosition = currentPosition + inputAngle;
             output[0] = newHeadPosition;
-            currentInputAngle = newInputAngle;
-            currentHeadPosition = newHeadPosition;
+            stream = std::stringstream();
+            previousInputAngle = inputAngle;
             std::cout << output[0] << "\n";
         }
+    }
+    else
+    {
+        return;
     }
 }
 
@@ -90,6 +87,15 @@ bool Arduino::isValueInArray(float inputAngle, float applicableValues[])
         {
             return true;
         }
+    }
+    return false;
+}
+
+bool Arduino::isPositionValid(float inputAngle, float currentPosition, float goalPosition)
+{
+    if (goalPosition <= maxAnglePosition && goalPosition >= minAnglePosition && currentPosition + inputAngle <= maxAnglePosition && currentPosition + inputAngle >= minAnglePosition)
+    {
+        return true;
     }
     return false;
 }

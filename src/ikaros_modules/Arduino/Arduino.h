@@ -21,11 +21,12 @@ public:
     void Init();
     void Tick();
     bool isValueInArray(float inputAngle, float applicableValues[]);
+    bool isPositionValid(float inputAngle, float currentPosition, float goalPosition);
     float *output;
-    float currentInputAngle;
-    float newInputAngle;
-    float currentHeadPosition;
-    float newHeadPosition;
+    float *currentPositionArray;
+    float *goalPositionArray;
+    float inputAngle;
+    float previousInputAngle;
     float applicableValues[8];
 };
 #endif /* Arduino_h*/
