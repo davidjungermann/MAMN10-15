@@ -44,13 +44,13 @@
 #include <Adafruit_AMG88xx.h>
 
 #define columnSize 8
+#define tresholdValue 5
 
 Adafruit_AMG88xx amg;
 float pixels[AMG88xx_PIXEL_ARRAY_SIZE];
 int averageTemperature;
 int totalTemperature;
 float currentAngle;
-float previousAngle;
 
 void setup()
 {
@@ -85,7 +85,7 @@ void loop()
     for (int i = 0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++)
     {
         /* Check if the current temperature is higher than average. */
-        if (pixels[i] - averageTemperature > 5)
+        if (pixels[i] - averageTemperature > tresholdValue)
         {
             /* Modulo calculations in order to divide the 64 pixels into columns to detect the various angles at. */
             /* Angles of temperature changes will be sent over Serial to an Ikaros module. Left is represented with negative values, and right is represented with positive values. */
@@ -123,7 +123,6 @@ void loop()
             }
 
             Serial.println(currentAngle);
-
             // Important to break from loop in order to not pick up noisy differences from other pixels.
             break;
         }

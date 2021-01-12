@@ -20,17 +20,6 @@
 		angle_unit 	 = "degrees"
 	/>
     
-	<!-- Modules to generate a moving behaviour -->
-	<!-- These modueles are just do demonstate a moving behavioer of the arm. These modules and connections should be removed and replaced by user modules -->
-    <module
-		class		=	"FunctionGenerator"
-		name		=	"GoalPosition1"
-		type		=	"sin"
-		frequency	=	"0.0314"
-		offset      =	"180"
-		amplitude	=	"60"
-		shift		=	"0.0"
-	/>
 	<module
 		class		=	"FunctionGenerator"
 		name		=	"Speed"
@@ -44,11 +33,7 @@
     <module class = "Constant" name = "TorqueLimit" data = "1" />
     <module class = "Arduino" name = "Arduino" />
 	
-	<!-- Order is important -->
-	<connection  source = "GoalPosition1.OUTPUT"  target = "Dynamixel.GOAL_POSITION" />
-
 	<connection  source = "Speed.OUTPUT"  target = "Dynamixel.MOVING_SPEED" />
-
     <connection source = "TorqueLimit.OUTPUT" target = "Dynamixel.TORQUE_LIMIT" />
 	        
 	<view name = "Lucs Robotic Arm" object_size = "50" >
@@ -62,36 +47,7 @@
             w = "2" 	h = "2"
             color 	 = "yellow"
         />
-        <object
-            class	 = "Plot"
-            title	 = "Position Sent 1"
-            module	 = "GoalPosition1"
-            source 	 = "OUTPUT"
-            x = "0" 	y = "8"
-            w = "2" 	h = "2" 
-            color 	 = "green"
-            max 	 = "360"
-        />
-        <object
-            class	 = "Plot"
-            title	 = "Position Sent 2"
-            module	 = "GoalPosition2"
-            source 	 = "OUTPUT"
-            x = "2" 	y = "8"
-            w = "2" 	h = "2" 
-            color 	 = "blue"
-            max = "360"
-        />
-        <object
-            class	 = "Plot"
-            title	 = "Position Sent 3"
-            module	 = "GoalPosition3"
-            source 	 = "OUTPUT"
-            x = "4" 	y = "8"
-            w = "2" 	h = "2" 
-            color 	 = "red, green, blue"
-            max = "360"
-        />
+        
         <object
             class	 = "Plot"
             title	 = "Actual Positions"
@@ -129,16 +85,7 @@
             select	 = "0,1,2"
             max = "80"
         />
-        
-        <object 
-        	class = "Image" 
-        	title = " " 
-        	dragarea = "no" 
-        	type = "file" 
-        	file = "Arm.jpg" 
-        	x = "0" y = "2"
-        	w = "4" h  = "4" 
-    	/>            		
+                  		
     </view>
 </group>
  

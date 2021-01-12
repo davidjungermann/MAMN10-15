@@ -20,22 +20,9 @@
 		angle_unit 	 = "degrees"
 	/>
     
-	<!-- Modules to generate a moving behaviour -->
-	<!-- These modueles are just do demonstate a moving behavioer of the arm. These modules and connections should be removed and replaced by user modules -->
-    <module
-		class		=	"FunctionGenerator"
-		name		=	"GoalPosition1"
-		type		=	"sin"
-		frequency	=	"0.314"
-		offset      =	"0"
-		amplitude	=	"60"
-		shift		=	"0.0"
-	/>
-    
     <module class = "Constant" name = "TorqueLimit" data = "1" />
     <module class = "Constant" name = "Speed" data = "0.1" />
     <module class = "Arduino" name = "Arduino" />
-    <module class = "Constant" name = "isMoving" data = "0.1" />
 	
 	<!-- Order is important -->
 	<connection  source = "Arduino.OUTPUT"  target = "Dynamixel.GOAL_POSITION" />
@@ -57,16 +44,6 @@
             x = "0" 	y = "6"
             w = "2" 	h = "2"
             color 	 = "yellow"
-        />
-        <object
-            class	 = "Plot"
-            title	 = "Position Sent 1"
-            module	 = "GoalPosition1"
-            source 	 = "OUTPUT"
-            x = "0" 	y = "8"
-            w = "2" 	h = "2" 
-            color 	 = "green"
-            max 	 = "360"
         />
         <object
             class	 = "Plot"
