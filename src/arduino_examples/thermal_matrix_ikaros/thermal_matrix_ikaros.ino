@@ -17,36 +17,34 @@
   BSD license, all text above must be included in any redistribution
  ***************************************************************************/
 
-/*  
- Components
- * ----------
- *  - Arduino Uno
- *  - Adafruit_AMG88xx thermal sensor
- *  
- *  Libraries
- *  ---------
- *  - Wire
- *  - Adafruit_AMG88xx https://github.com/adafruit/Adafruit_AMG88xx 
- *
- * Connections
- * -----------
- *  Break out    |    Arduino Uno
- *  -----------------------------
- *      VIN      |      5V
- *      GND      |      GND
- *      SDA      |      A4
- *      SCL      |      A5
- *      
- * This is a simple demo program that illustrates how the AMG8833 sensor can be used with Arduino in a prototype in part 1 of MAMN10. 
-  */
+/*
+  Components
+   ----------
+    - Arduino Uno
+    - Adafruit_AMG88xx thermal sensor
+
+    Libraries
+    ---------
+    - Wire
+    - Adafruit_AMG88xx https://github.com/adafruit/Adafruit_AMG88xx
+
+   Connections
+   -----------
+    Break out    |    Arduino Uno
+    -----------------------------
+        VIN      |      5V
+        GND      |      GND
+        SDA      |      A4
+        SCL      |      A5
+
+   This is a simple demo program that illustrates how the AMG8833 sensor can be used with Arduino in a prototype in part 1 of MAMN10.
+*/
 
 #include <Wire.h>
 #include <Adafruit_AMG88xx.h>
 
 #define columnSize 8
-
-/* Delay is added to accomodate for head movement, and delays in communication. This value will have to be evaluated and tested. */
-#define delayTime 1000
+#define tresholdValue 5
 
 Adafruit_AMG88xx amg;
 float pixels[AMG88xx_PIXEL_ARRAY_SIZE];
@@ -56,74 +54,77 @@ float currentAngle;
 
 void setup()
 {
-  Serial.begin(9600);
+    Serial.begin(9600);
 
-  bool status;
+    bool status;
 
-  status = amg.begin();
-  if (!status)
-  {
-    Serial.println("Could not find a valid AMG8833 sensor, check wiring!");
-    while (1);
-  }
+    status = amg.begin();
+    if (!status)
+    {
+        Serial.println("Could not find a valid AMG8833 sensor, check wiring!");
+        while (1);
+    }
 
-  delay(1000); // let sensor boot up
+    Serial.println("Sensor booting up");
+    delay(1000); // let sensor boot up
 
-  amg.readPixels(pixels);
-  for (int i = 0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++)
-  {
-    totalTemperature += pixels[i];
-  }
-  averageTemperature = (totalTemperature / AMG88xx_PIXEL_ARRAY_SIZE);
+    amg.readPixels(pixels);
+    for (int i = 0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++)
+    {
+        totalTemperature += pixels[i];
+    }
+    averageTemperature = (totalTemperature / AMG88xx_PIXEL_ARRAY_SIZE);
+    Serial.println(averageTemperature);
 }
 
 void loop()
 {
-  //read all the pixels
-  amg.readPixels(pixels);
-  
-  for (int i = 0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++)
-  {
-    /* Check if the current temperature is higher than average. */
-    if (pixels[i] - averageTemperature > 3)
+    //read all the pixels
+    amg.readPixels(pixels);
+
+    for (int i = 0; i < AMG88xx_PIXEL_ARRAY_SIZE; i++)
     {
-      /* Modulo calculations in order to divide the 64 pixels into columns to detect the various angles at. */
-      /* Angles of temperature changes will be sent over Serial to an Ikaros module. Left is represented with negative values, and right is represented with positive values. */
-      if (i % 8 == 0)
-      {
-        currentAngle = -7.5 * 4;
-      }
-      else if (i % 8 == 1)
-      {
-        currentAngle = -7.5 * 3;
-      }
-      else if (i % 8 == 2)
-      {
-        currentAngle = -7.5 * 2;
-      }
-      else if (i % 8 == 3)
-      {
-        currentAngle = -7.5;
-      }
-      else if (i % 8 == 4)
-      {
-        currentAngle = 7.5;
-      }
-      else if (i % 8 == 5)
-      {
-        currentAngle = 7.5 * 2;
-      }
-      else if (i % 8 == 6)
-      {
-        currentAngle = 7.5 * 3;
-      }
-      else if (i % 8 == 7)
-      {
-        currentAngle = 7.5 * 4;
-      }
-      Serial.println(currentAngle);
-      delay(delayTime);
-      break;
+        /* Check if the current temperature is higher than average. */
+        if (pixels[i] - averageTemperature > tresholdValue)
+        {
+            /* Modulo calculations in order to divide the 64 pixels into columns to detect the various angles at. */
+            /* Angles of temperature changes will be sent over Serial to an Ikaros module. Left is represented with negative values, and right is represented with positive values. */
+            if (i % 8 == 0)
+            {
+                currentAngle = -7.5 * 4;
+            }
+            else if (i % 8 == 1)
+            {
+                currentAngle = -7.5 * 3;
+            }
+            else if (i % 8 == 2)
+            {
+                currentAngle = -7.5 * 2;
+            }
+            else if (i % 8 == 3)
+            {
+                currentAngle = -7.5 * 1;
+            }
+            else if (i % 8 == 4)
+            {
+                currentAngle = 7.5 * 1;
+            }
+            else if (i % 8 == 5)
+            {
+                currentAngle = 7.5 * 2;
+            }
+            else if (i % 8 == 6)
+            {
+                currentAngle = 7.5 * 3;
+            }
+            else if (i % 8 == 7)
+            {
+                currentAngle = 7.5 * 4;
+            }
+
+            Serial.println(currentAngle);
+            // Important to break from loop in order to not pick up noisy differences from other pixels.
+            break;
+        }
     }
-  }
 }
