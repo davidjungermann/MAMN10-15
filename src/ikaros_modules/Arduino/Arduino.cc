@@ -45,33 +45,35 @@ void Arduino::Init()
     output = GetOutputArray("OUTPUT");
     currentPositionArray = GetInputArray("CURRENT_POSITION");
     goalPositionArray = GetInputArray("GOAL_POSITION");
-    float inputAngle;
-    float previousInputAngle;
 }
 
 void Arduino::Tick()
 {
+    s->Flush();
+    float inputAngle;
     float currentPosition = currentPositionArray[0];
     float goalPosition = goalPositionArray[0];
     bool moving = abs(goalPosition - currentPosition) >= 2;
-
     if (!moving)
     {
         float applicableValues[8] = {-30.0, -22.5, -15.0, -7.5, 7.5, 15.0, 22.5, 30.0};
-        s->ReceiveBytes(rcvmsg, 8);
+        // Angles are separated with X from Arduino program.
+        s->ReceiveUntil(rcvmsg, 'X');
         std::stringstream stream(rcvmsg);
         stream >> inputAngle;
+        stream.str("");
 
-        if (isValueInArray(inputAngle, applicableValues) && isPositionValid(inputAngle, currentPosition, goalPosition) && inputAngle != previousInputAngle)
+        if (isValueInArray(inputAngle, applicableValues) && isPositionValid(inputAngle, currentPosition, goalPosition))
         {
             float newHeadPosition = 0;
             newHeadPosition = currentPosition + inputAngle;
             output[0] = newHeadPosition;
-            stream = std::stringstream();
-            previousInputAngle = inputAngle;
+
+            std::cout << "-----------------------------"
+                      << "\n";
             std::cout << "Input angle: " << inputAngle << "\n";
-            std::cout << "New head position: " << output[0] << "\n";
-            std::cout << "----------------"
+            std::cout << "New head position: " << newHeadPosition << "\n";
+            std::cout << "-----------------------------"
                       << "\n";
         }
     }

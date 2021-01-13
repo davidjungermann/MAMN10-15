@@ -1,9 +1,9 @@
 <?xml version = "1.0"?>
 
-<group title = "Robot Arm Example">
+<group title = "Peripheral Vision Emulation">
 	
     <description>
-		This is an example file for using the LUCS MAMN10 Robot arm in ikaros.
+		Module for emulating Epi rotation of head using thermal matrix sensor and Arduino.
     </description>
     
     <!-- Servo part -->
@@ -42,7 +42,7 @@
     <connection source = "Dynamixel.FEEDBACK_PRESENT_POSITION" target = "Arduino.CURRENT_POSITION" />
     <connection source = "Dynamixel.FEEDBACK_GOAL_POSITION" target = "Arduino.GOAL_POSITION" />
 	        
-	<view name = "Lucs Robotic Arm" object_size = "100" >
+	<view name = "Peripheral Vision Emulation" object_size = "100" >
     	<!-- Dynamixel objects -->
         <object
             class	 = "Plot"

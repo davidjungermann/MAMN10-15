@@ -25,8 +25,6 @@ public:
     float *output;
     float *currentPositionArray;
     float *goalPositionArray;
-    float inputAngle;
-    float previousInputAngle;
     float applicableValues[8];
 };
 #endif /* Arduino_h*/

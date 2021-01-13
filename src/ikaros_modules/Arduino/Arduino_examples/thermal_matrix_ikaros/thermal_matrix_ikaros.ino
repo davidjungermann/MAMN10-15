@@ -44,7 +44,7 @@
 #include <Adafruit_AMG88xx.h>
 
 #define columnSize 8
-#define tresholdValue 3
+#define tresholdValue 5
 
 Adafruit_AMG88xx amg;
 float pixels[AMG88xx_PIXEL_ARRAY_SIZE];
@@ -65,7 +65,6 @@ void setup()
         while (1);
     }
 
-    Serial.println("Sensor booting up");
     delay(1000); // let sensor boot up
 
     amg.readPixels(pixels);
@@ -74,7 +73,6 @@ void setup()
         totalTemperature += pixels[i];
     }
     averageTemperature = (totalTemperature / AMG88xx_PIXEL_ARRAY_SIZE);
-    Serial.println(averageTemperature);
 }
 
 void loop()
@@ -122,7 +120,8 @@ void loop()
                 currentAngle = -7.5 * 4;
             }
 
-            Serial.println(currentAngle);
+            Serial.print(currentAngle);
+            Serial.print("X");
             // Important to break from loop in order to not pick up noisy differences from other pixels.
             break;
         }

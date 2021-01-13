@@ -5,7 +5,7 @@
 
 
 <description type="text">
-	Moving Dynamixel arm example
+	Module for emulating Epi rotation of head using thermal matrix sensor and Arduino.
 </description>
 
 
@@ -27,7 +27,8 @@
 </author>
 
 <files>
-	<file>Arduino.ikc</file>
+	<file>Arm.ikg</file>
+	<file>Arm.ikc</file>
 </files>
 
 </group>
