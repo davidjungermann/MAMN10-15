@@ -51,9 +51,8 @@ void Arduino::Init()
 
 void Arduino::Tick()
 {
-    /* Fullösning - vi vill nog egentligen bara ta det första värdet från streamen, sen rensa streamen, och börja igen.  */
-    float currentPosition = round(currentPositionArray[0]);
-    float goalPosition = round(goalPositionArray[0]);
+    float currentPosition = currentPositionArray[0];
+    float goalPosition = goalPositionArray[0];
     bool moving = abs(goalPosition - currentPosition) >= 2;
 
     if (!moving)
@@ -70,11 +69,16 @@ void Arduino::Tick()
             output[0] = newHeadPosition;
             stream = std::stringstream();
             previousInputAngle = inputAngle;
-            std::cout << output[0] << "\n";
+            std::cout << "Input angle: " << inputAngle << "\n";
+            std::cout << "New head position: " << output[0] << "\n";
+            std::cout << "----------------"
+                      << "\n";
         }
     }
     else
     {
+        std::cout << "Moving..."
+                  << "\n";
         return;
     }
 }
@@ -97,6 +101,8 @@ bool Arduino::isPositionValid(float inputAngle, float currentPosition, float goa
     {
         return true;
     }
+    std::cout << "Servo too close to threshold value to rotate. "
+              << "\n";
     return false;
 }
 
