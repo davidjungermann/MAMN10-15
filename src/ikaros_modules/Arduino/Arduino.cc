@@ -45,6 +45,7 @@ void Arduino::Init()
     output = GetOutputArray("OUTPUT");
     currentPositionArray = GetInputArray("CURRENT_POSITION");
     goalPositionArray = GetInputArray("GOAL_POSITION");
+    int nbrOfTicks = 0;
 }
 
 void Arduino::Tick()
@@ -54,10 +55,20 @@ void Arduino::Tick()
     float currentPosition = currentPositionArray[0];
     float goalPosition = goalPositionArray[0];
     bool moving = abs(goalPosition - currentPosition) >= 2;
+
+    if (nbrOfTicks == 0)
+    {
+        /* First iteration - turn head to 150 in order to prevent servo arm from attempting to turn outside of valid degrees. */
+        output[0] = 150;
+        nbrOfTicks++;
+        return;
+    }
+
+    /* If the head is moving, we don't consider further input. */
     if (!moving)
     {
         float applicableValues[8] = {-30.0, -22.5, -15.0, -7.5, 7.5, 15.0, 22.5, 30.0};
-        // Angles are separated with X from Arduino program.
+        /* Angles are separated with X from Arduino program. */
         s->ReceiveUntil(rcvmsg, 'X');
         std::stringstream stream(rcvmsg);
         stream >> inputAngle;
@@ -81,10 +92,13 @@ void Arduino::Tick()
     {
         std::cout << "Moving..."
                   << "\n";
+        nbrOfTicks++;
         return;
     }
+    nbrOfTicks++;
 }
 
+/* Helper method to check if a value in array of applicableValues */
 bool Arduino::isValueInArray(float inputAngle, float applicableValues[])
 {
     for (int i = 0; i < 8; i++)
@@ -97,14 +111,18 @@ bool Arduino::isValueInArray(float inputAngle, float applicableValues[])
     return false;
 }
 
+/* Serial communication can yield invalid numbers, check that the value received is correct.  */
 bool Arduino::isPositionValid(float inputAngle, float currentPosition, float goalPosition)
 {
     if (goalPosition <= maxAnglePosition && goalPosition >= minAnglePosition && currentPosition + inputAngle <= maxAnglePosition && currentPosition + inputAngle >= minAnglePosition)
     {
         return true;
     }
-    std::cout << "Servo too close to threshold value to rotate. "
-              << "\n";
+    if (nbrOfTicks != 0)
+    {
+        std::cout << "Servo too close to threshold value to rotate. "
+                  << "\n";
+    }
     return false;
 }
 

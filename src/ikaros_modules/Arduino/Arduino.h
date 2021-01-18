@@ -26,5 +26,6 @@ public:
     float *currentPositionArray;
     float *goalPositionArray;
     float applicableValues[8];
+    int nbrOfTicks;
 };
 #endif /* Arduino_h*/
